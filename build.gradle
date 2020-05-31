@@ -1,0 +1,59 @@
+plugins {
+  id "com.microsoft.azure.azurefunctions" version "1.2.0"
+}
+apply plugin: 'java'
+apply plugin: "com.microsoft.azure.azurefunctions"
+
+group 'com.reunium.azure.functions.handson.java'
+version '1.0.0'
+
+dependencies {
+    implementation 'com.microsoft.azure.functions:azure-functions-java-library:1.3.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.6.2'
+    testImplementation 'org.mockito:mockito-core:3.3.3'
+    
+    // JOOQ
+    compile group: 'org.jooq', name: 'jooq', version: '3.13.2'
+	compile group: 'org.jooq', name: 'jooq-meta', version: '3.13.2'
+    compile group: 'org.jooq', name: 'jooq-codegen', version: '3.13.2'
+    
+	// MySQL
+	compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.20'
+	
+	// JSON Tool
+	compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.11.0'
+	compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.0'
+}
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+compileJava.options.encoding = 'UTF-8'
+
+repositories {
+    mavenCentral()
+}
+
+ext.resourceGroupVar = System.getenv('function.app.resourceGroup')
+ext.appNameVar = System.getenv('function.app.appName')
+
+if (System.getenv('function.app.resourceGroup') == null) {
+   throw new GradleException("Please Set Env Variable 'function.app.resourceGroup'")
+}
+if (System.getenv('function.app.appName') == null) {
+   throw new GradleException("Please Set Env Variable 'function.app.appName'")
+}
+
+println "Resource Group Set to: $resourceGroupVar"
+println "App Name Set to: $appNameVar"
+
+azurefunctions {
+    resourceGroup = 'java-functions-group'
+    appName = 'reunium-sample-azure-function'
+    pricingTier = 'Consumption'
+    region = 'westus'
+    runtime {
+      os = 'windows'
+    }
+    localDebug = "transport=dt_socket,server=y,suspend=n,address=5005"
+}

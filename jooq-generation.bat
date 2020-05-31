@@ -1,0 +1,1 @@
+java -cp "libs/*" org.jooq.codegen.GenerationTool config/jooq-config.xml
