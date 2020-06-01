@@ -75,21 +75,10 @@ public class Function {
 	        this.context.getLogger().info(body);
 	        
 	        
-	        Registration pp = new Registration();
-	        pp.setAddress(new Address());
-	        pp.setName(new Name());
-	        
 	        // Deserialize Body
 	        ObjectMapper objectMapper = new ObjectMapper();
-	        
-	        context.getLogger().info("Checking:");
-	        context.getLogger().info(objectMapper.writeValueAsString(pp));
-	        
 			Registration registration = objectMapper.readValue(body, Registration.class);	
 
-	        context.getLogger().info("Checking [registration]:");
-	        context.getLogger().info(objectMapper.writeValueAsString(registration));
-			
 			// JOOQ - Insert Row
 			dsl.insertInto(
 					EVENT_REGISTRATION, 
